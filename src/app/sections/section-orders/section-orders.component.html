@@ -14,14 +14,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let order of orders">
+            <!-- Try implementing with async pipe to avoid memory leaks *ngFor="let order of _salesData.getOrders$ | async" -->
+            <tr *ngFor="let order of orders"> 
                 <td>{{ order.id }}</td>
                 <td>{{ order.customer.name }}</td>
-                <td>{{ order.total }}</td>
+                <td>{{ order.orderTotal | currency }}</td>
                 <td>{{ order.placed | date: "short" }}</td>
                 <td>{{ order.fulfilled | date: "short"}}</td>
                 <td>Status</td>
             </tr>
         </tbody>
     </table>
+
+    <app-pagination
+    (goPrev)="goToPrevious()"
+    (goNext)="goToNext()"></app-pagination>
 </div>
