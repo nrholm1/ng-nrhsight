@@ -15,6 +15,7 @@ export class SectionOrdersComponent implements OnInit {
   total = 0;
   page = 1;
   limit = 10;
+  loading = false;
 
   ngOnInit(): void {
     this.getOrders();
@@ -27,7 +28,7 @@ export class SectionOrdersComponent implements OnInit {
         console.log("Result from getOrders: ", res);
         this.orders = res['page']['data'];
         this.total = res['page'].total;
-        // this.loading = false;
+        this.loading = false;
       });
   }
 
@@ -47,6 +48,10 @@ export class SectionOrdersComponent implements OnInit {
     console.log("Next Button Clicked!"); //placeholder function for when onNext event is emitted from template(HTML)
   }
 
+  goToPage(n: number): void {
+    this.page = n;
+    this.getOrders();
+  }
 }
 
 
