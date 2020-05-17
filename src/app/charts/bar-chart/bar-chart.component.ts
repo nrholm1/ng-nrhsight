@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { SalesDataService } from 'src/app/services/sales-data.service';
+import * as moment from 'moment';
 
-const SAMPLE_BARCHART_DATA: any[] = [
-  {data: [43,54,74,34,65,76,87], label: "Q3 Sales"},
-  {data: [65,45,76,87,34,23,45], label: "Q4 Sales"}
-];
+// const SAMPLE_BARCHART_DATA: any[] = [
+//   {data: [43,54,74,34,65,76,87], label: "Q3 Sales"},
+//   {data: [65,45,76,87,34,23,45], label: "Q4 Sales"}
+// ];
 
-const SAMPLE_BARCHART_LABELS: string[] = ["W1","W2","W3","W4","W5","W6","W7"];
+// const SAMPLE_BARCHART_LABELS: string[] = ["W1","W2","W3","W4","W5","W6","W7"];
 
 @Component({
   selector: 'app-bar-chart',
@@ -14,18 +16,66 @@ const SAMPLE_BARCHART_LABELS: string[] = ["W1","W2","W3","W4","W5","W6","W7"];
 })
 export class BarChartComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _salesDataService: SalesDataService) { }
 
-  public barChartData: any[] = SAMPLE_BARCHART_DATA;
-  public barChartLabels: string[] = SAMPLE_BARCHART_LABELS;
+  orders: any;
+  orderLabels: string[];
+  orderData: number[];
+
+  public barChartData: any[];
+  public barChartLabels: string[];
   public barChartType = "bar";
-  public barChartLegend = false;
+  public barChartLegend = true;
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true
   }; 
 
   ngOnInit(): void {
+    this._salesDataService.getOrders(1, 100)
+      .subscribe(res => {
+        // console.log(res['page']['data']);
+        const localChartData = this.getChartData(res);
+        this.barChartLabels = localChartData.map(x => x[0]).reverse();
+        this.barChartData = [{ 'data': localChartData.map(x => x[1]), 'label': 'Sales'}];
+      });
+  }
+
+  getChartData(res: Object) {
+    this.orders = res['page']['data'];
+    const data = this.orders.map(o => o.orderTotal);
+
+    const formattedOrders = this.orders.reduce((r, e) => {
+      r.push([moment(e.placed).format("YY-MM-DD"), e.orderTotal]);
+      return r;
+    }, []);
+
+    const p = [];
+
+    const chartData = formattedOrders.reduce((r, e) => {
+      const key = e[0];
+      if (!p[key]) {
+        p[key] = e;
+        r.push(p[key]);
+      } else {
+        p[key][1] += e[1];
+      }
+      return r;
+    }, []);
+    
+    
+    console.log(chartData);
+    return chartData;
+    // return formattedOrders;
   }
 
 }
+
+
+    // const myData = [3, 4, 5].reduce((sum, value) => { 
+    //   console.log(sum, value);
+    //   return sum + value; 
+    // }, 0);
+    
+    // console.log('myData: ', myData);
+
