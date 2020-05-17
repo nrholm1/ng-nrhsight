@@ -33,18 +33,18 @@ export class SectionOrdersComponent implements OnInit {
   }
 
   goToPrevious(): void {
-    if (this.page > 1){
-      this.page--;
-      this.getOrders();
-    }
+    // if (this.page > 1){
+    this.page--;
+    this.getOrders();
+    
     console.log("Previous Button Clicked!"); //placeholder function for when onPrev event is emitted from template(HTML)
   }
   goToNext(): void {
-    if (this.page < (this.total / this.limit))
-    {
-      this.page++;
-      this.getOrders();
-    }
+    // if (this.page < (this.total / this.limit))
+    
+    this.page++;
+    this.getOrders();
+    
     console.log("Next Button Clicked!"); //placeholder function for when onNext event is emitted from template(HTML)
   }
 
