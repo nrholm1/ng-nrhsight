@@ -20,13 +20,13 @@ export class SalesDataService {
 
   getOrdersByCustomer(n: number)
   {
-    return this._http.get(this.myApiUrl + '/bycustomer/' + n)
+    return this._http.get(this.myApiUrl + 'bycustomer/' + n)
       .pipe(map(res => res));
   }
 
   getOrdersByState()
   {
-    return this._http.get(this.myApiUrl + '/bystate')
+    return this._http.get(this.myApiUrl + 'bystate')
       .pipe(map(res => res));
   }
 }

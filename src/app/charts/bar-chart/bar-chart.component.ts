@@ -25,18 +25,18 @@ export class BarChartComponent implements OnInit {
   public barChartData: any[];
   public barChartLabels: string[];
   public barChartType = "bar";
-  public barChartLegend = true;
+  public barChartLegend = false;
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true
   }; 
 
   ngOnInit(): void {
-    this._salesDataService.getOrders(1, 100)
+    this._salesDataService.getOrders(10, 100)
       .subscribe(res => {
         // console.log(res['page']['data']);
         const localChartData = this.getChartData(res);
-        this.barChartLabels = localChartData.map(x => x[0]).reverse();
+        this.barChartLabels = localChartData.map(x => x[0]);
         this.barChartData = [{ 'data': localChartData.map(x => x[1]), 'label': 'Sales'}];
       });
   }
@@ -64,7 +64,7 @@ export class BarChartComponent implements OnInit {
     }, []);
     
     
-    console.log(chartData);
+    // console.log(chartData);
     return chartData;
     // return formattedOrders;
   }
