@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { THEME_COLORS } from 'src/app/shared/theme.colors';
 
 const theme = "Bright";
